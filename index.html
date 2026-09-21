@@ -1342,7 +1342,7 @@ body.revealed #music-control{
 
   <!-- 🎵 Coloca tu archivo de audio como: flores-amarillas.mp3 -->
   <audio id="romantic-music" loop preload="auto">
-    <source src="flores-amarillas.mp3" type="audio/mpeg">
+    <source src="https://files.catbox.moe/7c18oj.mp3" type="audio/mpeg">
   </audio>
 
   <section id="welcome-screen" aria-label="Sorpresa romántica">
@@ -1635,8 +1635,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const heart = document.getElementById("heart-button");
   const letter = document.getElementById("letter-modal");
   const closeLetter = document.getElementById("close-letter");
+  const audio = document.getElementById("romantic-music");
+  const musicControl = document.getElementById("music-control");
 
-  // Al dar clic al corazón, crea los destellos de estrellas mágicas en el centro
+  // Destellos de estrellas al presionar el corazón
   function createBurst() {
     const stars = ["✨", "🌟", "⭐", "✦", "💫"];
     for (let i = 0; i < 45; i++) {
@@ -1650,25 +1652,21 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => p.remove(), 1200);
     }
   }
-  
-  // NUEVO: Función que genera la lluvia de estrellas de fondo
+
+  // Generador de la lluvia de estrellas
   function generateMeteorShower() {
     const showerContainer = document.getElementById("meteor-shower");
-    const numStars = 25; // Cantidad de estrellas fugaces
+    if (!showerContainer) return;
+    const numStars = 25;
     
     for (let i = 0; i < numStars; i++) {
       const star = document.createElement("div");
       star.classList.add("star-wrapper");
-      
-      // Distribuir estrellas a lo largo de un área mayor a la pantalla 
-      // para que crucen desde arriba/derecha hacia abajo/izquierda
       star.style.left = `${Math.random() * 180}vw`; 
       star.style.top = `${Math.random() * 100 - 50}vh`; 
       
       const meteor = document.createElement("div");
       meteor.classList.add("shooting-star");
-      
-      // Duración y retrasos aleatorios para que se vea natural
       meteor.style.animationDuration = `${Math.random() * 2 + 2.5}s`;
       meteor.style.animationDelay = `${Math.random() * 4}s`;
       
@@ -1677,14 +1675,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Pre-generamos la lluvia de estrellas (no se verá hasta que body reciba 'revealed')
   generateMeteorShower();
 
+  // Función principal de la experiencia (incluye el inicio de la música)
   function openExperience() {
     if (welcome.classList.contains("opened")) return;
     heart.style.pointerEvents = "none";
     
-    // Llamar a los destellos del click
+    // Iniciar audio en respuesta al clic
+    if (audio) {
+      audio.play().then(() => {
+        if (musicControl) musicControl.classList.add("playing");
+      }).catch(error => {
+        console.log("El navegador bloqueó la reproducción automática:", error);
+      });
+    }
+
     createBurst();
     
     heart.animate([
@@ -1704,54 +1710,61 @@ document.addEventListener("DOMContentLoaded", () => {
 
   heart.addEventListener("click", openExperience);
   heart.addEventListener("keydown", e => {
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openExperience(); }
+    if (e.key === "Enter" || e.key === " ") { 
+      e.preventDefault(); 
+      openExperience(); 
+    }
   });
 
-  // Al hacer clic en el botón de la carta, despachar las flores y la lluvia de estrellas
+  // Control manual para pausar o reproducir la música
+  if (musicControl && audio) {
+    musicControl.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        musicControl.classList.add("playing");
+      } else {
+        audio.pause();
+        musicControl.classList.remove("playing");
+      }
+    });
+  }
+
+  // Cerrar la carta y desplegar las animaciones
   closeLetter.addEventListener("click", () => {
     letter.classList.remove("show");
     
     setTimeout(() => {
-      // Remover la clase que pausa y agregar 'revealed'
       body.classList.remove("flowers-paused");
       body.classList.add("revealed");
-      // Al agregarse "revealed", el CSS hará que el div #meteor-shower pase a opacity 1
     }, 350);
   });
 });
 
-  // Partículas luminosas flotantes: efecto visual, sin texto.
-  function createRomanticParticles() {
-    const amount = window.innerWidth < 600 ? 22 : 34;
+// Partículas luminosas flotantes
+function createRomanticParticles() {
+  const amount = window.innerWidth < 600 ? 22 : 34;
 
-    for (let i = 0; i < amount; i++) {
-      const p = document.createElement("span");
-      p.className = "romantic-particle";
+  for (let i = 0; i < amount; i++) {
+    const p = document.createElement("span");
+    p.className = "romantic-particle";
 
-      p.style.left = `${Math.random() * 100}vw`;
-      p.style.bottom = `${-10 - Math.random() * 20}vh`;
-      p.style.setProperty("--x", `${(Math.random() - 0.5) * 180}px`);
-      p.style.animationDuration = `${7 + Math.random() * 8}s`;
-      p.style.animationDelay = `${Math.random() * 7}s`;
-      p.style.transform = `scale(${0.5 + Math.random() * 1.2})`;
+    p.style.left = `${Math.random() * 100}vw`;
+    p.style.bottom = `${-10 - Math.random() * 20}vh`;
+    p.style.setProperty("--x", `${(Math.random() - 0.5) * 180}px`);
+    p.style.animationDuration = `${7 + Math.random() * 8}s`;
+    p.style.animationDelay = `${Math.random() * 7}s`;
+    p.style.transform = `scale(${0.5 + Math.random() * 1.2})`;
 
-      document.body.appendChild(p);
+    document.body.appendChild(p);
 
-      setTimeout(() => p.remove(), 17000);
-    }
+    setTimeout(() => p.remove(), 17000);
   }
+}
 
-  createRomanticParticles();
+createRomanticParticles();
+setInterval(createRomanticParticles, 8500);
 
-  // Mantener nuevas partículas entrando lentamente.
-  setInterval(createRomanticParticles, 8500);
-
-</script>
-
-<script>
-// =========================================================
-// DETALLES EXTRA — POLVO MÁGICO + CORAZONES FLOTANTES
-// =========================================================
+// Polvo mágico y corazones flotantes
 (function () {
   function createMagicDust() {
     const count = window.innerWidth < 600 ? 10 : 17;
