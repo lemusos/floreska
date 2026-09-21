@@ -600,103 +600,366 @@ body.revealed #meteor-shower {
 @keyframes growing-grass-ans { 0% { transform: scale(0); } }
 
 /* ==============================
-   PRESENTACIÓN ROMÁNTICA 2.0
+   PRESENTACIÓN ROMÁNTICA 3.0
    ============================== */
-html, body { width: 100%; height: 100%; }
-body { position: relative; }
+html, body { width:100%; height:100%; }
+body { position:relative; }
 
-#welcome-screen {
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+/* Pantalla de bienvenida cinematográfica */
+#welcome-screen{
+  position:fixed;
+  inset:0;
+  z-index:99999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
   background:
-    radial-gradient(circle at 50% 45%, rgba(255, 215, 70, .10), transparent 22%),
-    radial-gradient(circle at 20% 20%, rgba(112, 77, 255, .16), transparent 28%),
-    radial-gradient(circle at 80% 80%, rgba(255, 72, 154, .12), transparent 30%),
-    linear-gradient(135deg, #020106 0%, #09031b 48%, #020108 100%);
-  transition: opacity 1.1s ease, visibility 1.1s ease;
+    radial-gradient(circle at 50% 48%, rgba(255,221,92,.16), transparent 16%),
+    radial-gradient(circle at 20% 25%, rgba(255,80,150,.14), transparent 27%),
+    radial-gradient(circle at 80% 25%, rgba(130,80,255,.16), transparent 30%),
+    radial-gradient(circle at 50% 100%, rgba(255,174,40,.12), transparent 35%),
+    linear-gradient(145deg,#010107 0%,#090219 48%,#020106 100%);
+  transition:opacity 1.4s ease,visibility 1.4s ease,filter 1.4s ease;
 }
-#welcome-screen::before, #welcome-screen::after {
-  content: ""; position: absolute; width: 70vmax; height: 70vmax; border-radius: 50%;
-  border: 1px solid rgba(255,255,255,.035); animation: universe-spin 18s linear infinite;
+#welcome-screen.opened{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  filter:blur(8px);
 }
-#welcome-screen::after { width: 48vmax; height: 48vmax; animation-duration: 12s; animation-direction: reverse; }
-#welcome-screen.opened { opacity: 0; visibility: hidden; pointer-events: none; }
-
-.universe-stars, .universe-stars::before, .universe-stars::after {
-  position: absolute; inset: 0; content: "";
-  background-image: radial-gradient(circle, rgba(255,255,255,.9) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(255,236,130,.7) 0 1px, transparent 1.5px),
-    radial-gradient(circle, rgba(255,255,255,.55) 0 1px, transparent 1.5px);
-  background-size: 90px 110px, 160px 170px, 240px 210px;
-  background-position: 10px 20px, 60px 80px, 120px 10px; opacity: .65; animation: stars-drift 16s linear infinite;
+#welcome-screen::before,
+#welcome-screen::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:75vmax;
+  height:75vmax;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(255,225,110,.07);
+  box-shadow:0 0 100px rgba(255,194,55,.035), inset 0 0 100px rgba(255,194,55,.025);
+  animation:universe-spin 24s linear infinite;
 }
-.universe-stars::before { transform: scale(1.3); opacity: .28; animation-duration: 25s; }
-.universe-stars::after { transform: scale(.8); opacity: .4; animation-duration: 10s; animation-direction: reverse; }
-
-.welcome-content { position: relative; z-index: 3; width: min(90vw, 520px); text-align: center; color: white; padding: 30px; }
-.welcome-kicker { margin: 0 0 10px; font: 600 12px/1.4 Arial, sans-serif; letter-spacing: .34em; text-transform: uppercase; color: rgba(255,235,165,.82); animation: fade-up 1s .2s both; }
-.welcome-title { margin: 0; font: 700 clamp(28px, 7vw, 52px)/1.05 Georgia, serif; letter-spacing: .02em; text-shadow: 0 0 25px rgba(255,215,90,.18); animation: fade-up 1s .35s both; }
-.welcome-subtitle { margin: 12px auto 30px; max-width: 360px; color: rgba(255,255,255,.72); font: 400 15px/1.7 Arial, sans-serif; animation: fade-up 1s .5s both; }
-
-.heart-button {
-  position: relative; width: 150px; height: 150px; margin: 0 auto 28px; border: 0;
-  background: transparent; cursor: pointer; display: grid; place-items: center; outline: none;
-  -webkit-tap-highlight-color: transparent; animation: heart-float 3s ease-in-out infinite; transition: transform 0.2s ease;
+#welcome-screen::after{
+  width:48vmax;
+  height:48vmax;
+  border-color:rgba(255,255,255,.06);
+  animation-duration:15s;
+  animation-direction:reverse;
 }
-.heart-button:hover { transform: scale(1.05); }
-.heart-button::before, .heart-button::after { content: ""; position: absolute; inset: 15px; border: 1px solid rgba(255,225,105,.28); border-radius: 50%; animation: heart-ring 2.4s ease-out infinite; }
-.heart-button::after { animation-delay: 1.2s; }
 
-.heart-shape {
-  position: relative; width: 70px; height: 70px; transform: rotate(-45deg);
-  background: linear-gradient(135deg, #ffeb85, #ffb31a 42%, #e65c00 100%); border-radius: 10px 0 10px 10px;
-  box-shadow: 0 0 15px rgba(255,211,40,0.8), 0 0 35px rgba(255,100,0,0.6); animation: heartbeat 1s ease-in-out infinite;
+.universe-stars,
+.universe-stars::before,
+.universe-stars::after{
+  position:absolute;
+  inset:0;
+  content:"";
+  background-image:
+    radial-gradient(circle,rgba(255,255,255,.95) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(255,236,130,.8) 0 1px,transparent 1.5px),
+    radial-gradient(circle,rgba(255,255,255,.55) 0 1px,transparent 1.5px);
+  background-size:90px 110px,160px 170px,240px 210px;
+  background-position:10px 20px,60px 80px,120px 10px;
+  opacity:.65;
+  animation:stars-drift 16s linear infinite;
 }
-.heart-shape::before, .heart-shape::after { content: ""; position: absolute; width: 70px; height: 70px; border-radius: 50%; background: inherit; }
-.heart-shape::before { top: -35px; left: 0; }
-.heart-shape::after { left: 35px; top: 0; }
-.heart-highlight { position: absolute; z-index: 5; width: 13px; height: 24px; border-radius: 50%; background: rgba(255,255,255,.85); transform: rotate(-45deg) translate(-22px,-22px); filter: blur(1px); }
-.touch-label { position: relative; z-index: 10; margin-top: 8px; font: 800 15px Arial, sans-serif; letter-spacing: .22em; color: #fff6bf; text-shadow: 0 0 12px rgba(255,215,70,.9); animation: touch-pulse 1.5s ease-in-out infinite; }
-.touch-hint { font-size: 26px; margin-top: 5px; animation: finger-bounce 1.5s ease-in-out infinite; }
+.universe-stars::before{transform:scale(1.3);opacity:.25;animation-duration:28s;}
+.universe-stars::after{transform:scale(.8);opacity:.38;animation-duration:10s;animation-direction:reverse;}
 
-.burst-particle { position: fixed; left: 50%; top: 50%; z-index: 100001; pointer-events: none; display: flex; align-items: center; justify-content: center; background: transparent; box-shadow: none; animation: burst 1.2s cubic-bezier(.15,.75,.25,1) forwards; text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.8); }
+/* Luna decorativa */
+.welcome-moon{
+  position:absolute;
+  top:9%;
+  right:10%;
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%,#fff9cf 0 8%,#ffe789 35%,#dca72d 100%);
+  box-shadow:0 0 25px rgba(255,224,111,.45),0 0 80px rgba(255,190,50,.12);
+  opacity:.85;
+  animation:moon-breathe 5s ease-in-out infinite;
+}
+.welcome-moon::after{
+  content:"";
+  position:absolute;
+  width:92px;height:92px;
+  border-radius:50%;
+  background:#080219;
+  left:27px;top:-12px;
+}
 
-#letter-modal { position: fixed; inset: 0; z-index: 99990; display: grid; place-items: center; padding: 24px; opacity: 0; visibility: hidden; pointer-events: none; background: rgba(0,0,0,.28); backdrop-filter: blur(5px); transition: opacity .8s ease, visibility .8s ease; }
-#letter-modal.show { opacity: 1; visibility: visible; pointer-events: auto; }
-.letter-card { position: relative; width: min(92vw, 440px); padding: 34px 28px 28px; border: 1px solid rgba(255,220,110,.42); border-radius: 26px; color: #fff8dd; text-align: center; background: linear-gradient(145deg, rgba(28,20,8,.94), rgba(12,8,25,.96)); box-shadow: 0 25px 90px rgba(0,0,0,.65), inset 0 0 35px rgba(255,211,67,.05), 0 0 45px rgba(255,190,30,.08); transform: translateY(35px) scale(.88) rotateX(12deg); transition: transform 1s cubic-bezier(.2,.9,.2,1); }
-#letter-modal.show .letter-card { transform: translateY(0) scale(1) rotateX(0); }
-.letter-card::before { content: "✦"; position: absolute; top: 14px; left: 18px; color: #ffd84a; font-size: 15px; opacity: .8; }
-.letter-card::after { content: "✦"; position: absolute; bottom: 14px; right: 18px; color: #ffd84a; font-size: 15px; opacity: .8; }
-.letter-icon { font-size: 36px; margin-bottom: 8px; filter: drop-shadow(0 0 10px rgba(255,210,55,.55)); }
-.letter-title { margin: 0 0 14px; font: 700 28px Georgia, serif; color: #ffe889; }
-.letter-text { margin: 0; font: 400 16px/1.8 Georgia, serif; color: rgba(255,248,221,.9); }
-.letter-sign { margin: 20px 0 22px; font: italic 18px Georgia, serif; color: #ffd94f; }
-.letter-close { border: 1px solid rgba(255,221,90,.55); border-radius: 999px; padding: 11px 20px; color: #fff7c8; background: rgba(255,205,40,.08); cursor: pointer; font: 700 12px Arial, sans-serif; letter-spacing: .12em; transition: transform .25s ease, background .25s ease, box-shadow .25s ease; }
-.letter-close:hover { transform: translateY(-2px); background: rgba(255,205,40,.16); box-shadow: 0 0 20px rgba(255,211,40,.15); }
+/* Pequeños corazones decorativos */
+.welcome-heart{
+  position:absolute;
+  width:10px;height:10px;
+  background:#ffd95a;
+  transform:rotate(-45deg);
+  opacity:.4;
+  animation:float-heart-intro 6s ease-in-out infinite;
+  filter:drop-shadow(0 0 8px rgba(255,210,65,.7));
+}
+.welcome-heart::before,.welcome-heart::after{
+  content:"";
+  position:absolute;
+  width:10px;height:10px;
+  border-radius:50%;
+  background:inherit;
+}
+.welcome-heart::before{top:-5px;left:0}
+.welcome-heart::after{left:5px;top:0}
 
-.flower-message { position: fixed; z-index: 500; left: 50%; top: 9%; transform: translateX(-50%); width: min(90vw, 650px); text-align: center; color: #fff3a0; opacity: 0; pointer-events: none; text-shadow: 0 0 18px rgba(255,205,40,.75); transition: opacity 1.4s ease 1s; }
-body.revealed .flower-message { opacity: 1; }
-.flower-message h2 { margin: 0; font: 700 clamp(22px,5vw,38px) Georgia,serif; }
-.flower-message p { margin: 8px 0 0; color: rgba(255,255,255,.76); font: 14px/1.5 Arial,sans-serif; }
+.welcome-heart.h1{left:13%;bottom:25%;animation-delay:0s}
+.welcome-heart.h2{right:17%;bottom:34%;animation-delay:2s;transform:rotate(-45deg) scale(.7)}
+.welcome-heart.h3{left:24%;top:28%;animation-delay:3.5s;transform:rotate(-45deg) scale(.55)}
 
-body.flowers-paused .flowers, body.flowers-paused .flowers *, body.flowers-paused .grow-ans, body.flowers-paused .grow-ans *, body.flowers-paused .growing-grass, body.flowers-paused .growing-grass *, body.flowers-paused .long-g, body.flowers-paused .long-g * { animation-play-state: paused !important; }
-body.flowers-paused .flowers { opacity: 0; filter: blur(5px); transition: opacity 1.6s ease, filter 1.6s ease; }
-body.revealed .flowers { opacity: 1; filter: none; }
+.welcome-content{
+  position:relative;
+  z-index:3;
+  width:min(92vw,560px);
+  text-align:center;
+  color:#fff;
+  padding:28px;
+}
+.welcome-kicker{
+  margin:0 0 12px;
+  font:600 11px/1.4 Arial,sans-serif;
+  letter-spacing:.42em;
+  text-transform:uppercase;
+  color:rgba(255,235,165,.85);
+  animation:fade-up 1s .2s both;
+}
+.welcome-title{
+  margin:0;
+  font:700 clamp(32px,8vw,58px)/1.03 Georgia,serif;
+  letter-spacing:.01em;
+  background:linear-gradient(180deg,#fff8cf 0%,#ffd95a 52%,#f4a51d 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 30px rgba(255,215,90,.15);
+  animation:fade-up 1s .35s both;
+}
+.welcome-subtitle{
+  margin:14px auto 28px;
+  max-width:410px;
+  color:rgba(255,255,255,.74);
+  font:400 15px/1.8 Georgia,serif;
+  animation:fade-up 1s .5s both;
+}
+.welcome-subtitle strong{color:#ffe889;font-weight:600}
 
-@keyframes heartbeat { 0%,100%{transform:rotate(-45deg) scale(1)} 14%{transform:rotate(-45deg) scale(1.14)} 28%{transform:rotate(-45deg) scale(1)} 42%{transform:rotate(-45deg) scale(1.10)} 56%{transform:rotate(-45deg) scale(1)} }
-@keyframes heart-float { 0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)} }
-@keyframes heart-ring { 0%{transform:scale(.65);opacity:.8}100%{transform:scale(1.5);opacity:0} }
-@keyframes touch-pulse { 0%,100%{opacity:.55;transform:scale(.98)}50%{opacity:1;transform:scale(1.04)} }
-@keyframes finger-bounce { 0%,100%{transform:translateY(0)}50%{transform:translateY(6px)} }
-@keyframes stars-drift { from{transform:translate3d(0,0,0)}to{transform:translate3d(-45px,35px,0)} }
-@keyframes universe-spin { from{transform:rotate(0deg) scale(1)}to{transform:rotate(360deg) scale(1.03)} }
-@keyframes fade-up { from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)} }
-@keyframes burst { from{transform:translate(-50%,-50%) rotate(var(--a)) translateX(0) scale(1);opacity:1} to{transform:translate(-50%,-50%) rotate(var(--a)) translateX(var(--d)) scale(0);opacity:0} }
+/* Botón-corazón */
+.heart-button{
+  position:relative;
+  width:180px;
+  height:180px;
+  margin:0 auto 16px;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  outline:none;
+  -webkit-tap-highlight-color:transparent;
+  animation:heart-float 3s ease-in-out infinite;
+  transition:transform .25s ease;
+}
+.heart-button:hover{transform:scale(1.06)}
+.heart-button:focus-visible{
+  outline:2px solid rgba(255,230,120,.8);
+  outline-offset:8px;
+  border-radius:50%;
+}
+.heart-button::before,
+.heart-button::after{
+  content:"";
+  position:absolute;
+  inset:18px;
+  border:1px solid rgba(255,225,105,.28);
+  border-radius:50%;
+  animation:heart-ring 2.6s ease-out infinite;
+}
+.heart-button::after{animation-delay:1.3s}
+.heart-glow{
+  position:absolute;
+  width:150px;height:150px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(255,205,55,.23),transparent 68%);
+  filter:blur(5px);
+  animation:glow-pulse 1.6s ease-in-out infinite;
+}
+.heart-shape{
+  position:relative;
+  z-index:2;
+  width:78px;
+  height:78px;
+  transform:rotate(-45deg);
+  background:linear-gradient(135deg,#fff1a0 0%,#ffd32f 38%,#ff9d00 72%,#df5200 100%);
+  border-radius:12px 0 12px 12px;
+  box-shadow:
+    0 0 18px rgba(255,221,70,.95),
+    0 0 45px rgba(255,157,20,.65),
+    0 0 85px rgba(255,185,30,.22);
+  animation:heartbeat 1.05s ease-in-out infinite;
+}
+.heart-shape::before,.heart-shape::after{
+  content:"";
+  position:absolute;
+  width:78px;height:78px;
+  border-radius:50%;
+  background:inherit;
+}
+.heart-shape::before{top:-39px;left:0}
+.heart-shape::after{left:39px;top:0}
+.heart-highlight{
+  position:absolute;
+  z-index:5;
+  width:15px;height:27px;
+  border-radius:50%;
+  background:rgba(255,255,255,.9);
+  transform:rotate(-45deg) translate(-25px,-25px);
+  filter:blur(1px);
+}
+.touch-label{
+  position:relative;
+  z-index:10;
+  margin-top:4px;
+  font:800 14px Arial,sans-serif;
+  letter-spacing:.28em;
+  color:#fff7c7;
+  text-shadow:0 0 14px rgba(255,215,70,.95);
+  animation:touch-pulse 1.5s ease-in-out infinite;
+}
+.touch-hint{
+  font-size:24px;
+  margin-top:7px;
+  animation:finger-bounce 1.5s ease-in-out infinite;
+}
+.music-hint{
+  margin-top:14px;
+  color:rgba(255,255,255,.48);
+  font:11px/1.5 Arial,sans-serif;
+  letter-spacing:.08em;
+}
+.music-hint span{color:#ffd957}
+
+.burst-particle{
+  position:fixed;
+  left:50%;top:50%;
+  z-index:100001;
+  pointer-events:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:transparent;
+  box-shadow:none;
+  animation:burst 1.35s cubic-bezier(.15,.75,.25,1) forwards;
+  text-shadow:0 0 10px rgba(255,215,0,.8),0 0 20px rgba(255,255,255,.8);
+}
+
+/* Carta */
+#letter-modal{
+  position:fixed;
+  inset:0;
+  z-index:99990;
+  display:grid;
+  place-items:center;
+  padding:24px;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  background:rgba(0,0,0,.34);
+  backdrop-filter:blur(7px);
+  transition:opacity .8s ease,visibility .8s ease;
+}
+#letter-modal.show{opacity:1;visibility:visible;pointer-events:auto}
+.letter-card{
+  position:relative;
+  width:min(92vw,450px);
+  padding:38px 28px 28px;
+  border:1px solid rgba(255,220,110,.45);
+  border-radius:28px;
+  color:#fff8dd;
+  text-align:center;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(255,214,80,.12),transparent 42%),
+    linear-gradient(145deg,rgba(28,20,8,.96),rgba(12,8,25,.97));
+  box-shadow:0 25px 90px rgba(0,0,0,.7),inset 0 0 35px rgba(255,211,67,.05),0 0 55px rgba(255,190,30,.10);
+  transform:translateY(35px) scale(.88) rotateX(12deg);
+  transition:transform 1s cubic-bezier(.2,.9,.2,1);
+}
+#letter-modal.show .letter-card{transform:translateY(0) scale(1) rotateX(0)}
+.letter-card::before{content:"✦";position:absolute;top:14px;left:18px;color:#ffd84a;font-size:15px;opacity:.8}
+.letter-card::after{content:"✦";position:absolute;bottom:14px;right:18px;color:#ffd84a;font-size:15px;opacity:.8}
+.letter-icon{font-size:38px;margin-bottom:8px;filter:drop-shadow(0 0 12px rgba(255,210,55,.55))}
+.letter-title{margin:0 0 14px;font:700 28px Georgia,serif;color:#ffe889}
+.letter-text{margin:0;font:400 16px/1.8 Georgia,serif;color:rgba(255,248,221,.92)}
+.letter-sign{margin:20px 0 22px;font:italic 18px Georgia,serif;color:#ffd94f}
+.letter-close{
+  border:1px solid rgba(255,221,90,.55);
+  border-radius:999px;
+  padding:12px 22px;
+  color:#fff7c8;
+  background:rgba(255,205,40,.08);
+  cursor:pointer;
+  font:700 12px Arial,sans-serif;
+  letter-spacing:.12em;
+  transition:transform .25s ease,background .25s ease,box-shadow .25s ease;
+}
+.letter-close:hover{transform:translateY(-2px);background:rgba(255,205,40,.16);box-shadow:0 0 20px rgba(255,211,40,.15)}
+
+.flower-message{
+  position:fixed;
+  z-index:500;
+  left:50%;top:9%;
+  transform:translateX(-50%);
+  width:min(90vw,650px);
+  text-align:center;
+  color:#fff3a0;
+  opacity:0;
+  pointer-events:none;
+  text-shadow:0 0 18px rgba(255,205,40,.75);
+  transition:opacity 1.4s ease 1s;
+}
+body.revealed .flower-message{opacity:1}
+.flower-message h2{margin:0;font:700 clamp(22px,5vw,38px) Georgia,serif}
+.flower-message p{margin:8px 0 0;color:rgba(255,255,255,.76);font:14px/1.5 Arial,sans-serif}
+
+body.flowers-paused .flowers,
+body.flowers-paused .flowers *,
+body.flowers-paused .grow-ans,
+body.flowers-paused .grow-ans *,
+body.flowers-paused .growing-grass,
+body.flowers-paused .growing-grass *,
+body.flowers-paused .long-g,
+body.flowers-paused .long-g *{
+  animation-play-state:paused !important;
+}
+body.flowers-paused .flowers{
+  opacity:0;
+  filter:blur(8px) scale(.96);
+  transition:opacity 2s ease,filter 2s ease,transform 2s ease;
+}
+body.revealed .flowers{
+  opacity:1;
+  filter:none;
+  transform:scale(1.01);
+}
+
+@keyframes heartbeat{0%,100%{transform:rotate(-45deg) scale(1)}14%{transform:rotate(-45deg) scale(1.16)}28%{transform:rotate(-45deg) scale(1)}42%{transform:rotate(-45deg) scale(1.10)}56%{transform:rotate(-45deg) scale(1)}}
+@keyframes heart-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes heart-ring{0%{transform:scale(.65);opacity:.8}100%{transform:scale(1.5);opacity:0}}
+@keyframes touch-pulse{0%,100%{opacity:.55;transform:scale(.98)}50%{opacity:1;transform:scale(1.05)}}
+@keyframes finger-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes stars-drift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-45px,35px,0)}}
+@keyframes universe-spin{from{transform:translate(-50%,-50%) rotate(0deg) scale(1)}to{transform:translate(-50%,-50%) rotate(360deg) scale(1.03)}}
+@keyframes fade-up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes burst{from{transform:translate(-50%,-50%) rotate(var(--a)) translateX(0) scale(1);opacity:1}to{transform:translate(-50%,-50%) rotate(var(--a)) translateX(var(--d)) scale(0);opacity:0}}
+@keyframes glow-pulse{0%,100%{transform:scale(.9);opacity:.6}50%{transform:scale(1.18);opacity:1}}
+@keyframes moon-breathe{0%,100%{transform:scale(1);opacity:.78}50%{transform:scale(1.05);opacity:1}}
+@keyframes float-heart-intro{0%,100%{transform:translateY(0) rotate(-45deg)}50%{transform:translateY(-35px) rotate(-45deg) scale(1.15)}}
 
 @media (max-width: 600px) {
   .welcome-content { padding: 20px; }
@@ -707,22 +970,406 @@ body.revealed .flowers { opacity: 1; filter: none; }
   .letter-card { padding: 30px 22px 24px; }
   .letter-text { font-size: 15px; }
 }
+
+/* =========================================================
+   MEJORA VISUAL ROMÁNTICA — SIN TEXTO NUEVO
+   ========================================================= */
+
+/* Fondo nocturno más profundo y cinematográfico */
+body {
+  background:
+    radial-gradient(circle at 50% 58%, rgba(255, 194, 70, .10), transparent 22%),
+    radial-gradient(circle at 15% 25%, rgba(255, 82, 150, .11), transparent 28%),
+    radial-gradient(circle at 85% 22%, rgba(145, 90, 255, .12), transparent 30%),
+    linear-gradient(180deg, #010107 0%, #070217 48%, #020106 100%);
+}
+
+/* Nebulosa suave */
+.night {
+  background-image:
+    radial-gradient(ellipse at 50% 35%, rgba(255, 220, 120, .08), transparent 28%),
+    radial-gradient(ellipse at 15% 20%, rgba(255, 70, 145, .10), transparent 30%),
+    radial-gradient(ellipse at 85% 18%, rgba(130, 80, 255, .10), transparent 30%),
+    radial-gradient(ellipse at bottom, rgba(255, 184, 48, .10), transparent 42%),
+    linear-gradient(180deg, #010107 0%, #08031a 55%, #020106 100%);
+  filter: blur(.15vmin);
+}
+
+/* Halo dorado detrás del ramo */
+.flowers::before {
+  content: "";
+  position: fixed;
+  left: 50%;
+  bottom: 10vmin;
+  width: min(75vmin, 760px);
+  height: min(75vmin, 760px);
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(circle,
+      rgba(255, 225, 105, .24) 0%,
+      rgba(255, 173, 35, .11) 24%,
+      rgba(255, 88, 150, .05) 45%,
+      transparent 70%);
+  filter: blur(18px);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 2s ease;
+  pointer-events: none;
+}
+
+body.revealed .flowers::before {
+  opacity: 1;
+  animation: romantic-halo 5s ease-in-out infinite;
+}
+
+@keyframes romantic-halo {
+  0%,100% { transform: translateX(-50%) scale(.96); opacity: .72; }
+  50% { transform: translateX(-50%) scale(1.08); opacity: 1; }
+}
+
+/* Más brillo en los pétalos amarillos */
+.flower__leaf {
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255,255,255,.45), transparent 18%),
+    linear-gradient(145deg, #fff59a 0%, #ffd92f 34%, #f7a900 72%, #d97800 100%);
+  box-shadow:
+    inset 0 0 2vmin rgba(255,255,255,.65),
+    0 0 1.5vmin rgba(255,210,55,.35);
+}
+
+.flower__leaf--4 {
+  background-image:
+    radial-gradient(circle at 28% 20%, rgba(255,255,255,.4), transparent 18%),
+    linear-gradient(145deg, #ffe978, #ffc928 55%, #e78b00);
+}
+
+/* Centros más luminosos */
+.flower__white-circle {
+  box-shadow:
+    0 0 1.2vmin rgba(255,255,255,.55),
+    0 0 3vmin rgba(255,204,70,.45);
+}
+
+/* Lucecitas del ramo */
+.flower__light {
+  width: 1.25vmin;
+  height: 1.25vmin;
+  box-shadow:
+    0 0 1vmin rgba(255,248,180,.95),
+    0 0 2.5vmin rgba(255,196,35,.8),
+    0 0 5vmin rgba(255,100,150,.35);
+}
+
+/* Suelo de luz */
+.flowers::after {
+  content: "";
+  position: fixed;
+  left: 50%;
+  bottom: -4vmin;
+  width: min(105vw, 1200px);
+  height: 22vmin;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(255,190,50,.16), transparent 68%);
+  filter: blur(12px);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transition: opacity 2s ease;
+}
+
+body.revealed .flowers::after {
+  opacity: 1;
+}
+
+/* Más magia en las estrellas fugaces */
+.shooting-star {
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.25) 15%,
+    rgba(255,242,178,.95) 65%,
+    rgba(255,116,185,.45) 100%
+  );
+  filter: drop-shadow(0 0 5px rgba(255,220,110,.8));
+}
+
+.shooting-star::before {
+  width: 5px;
+  height: 5px;
+  box-shadow:
+    0 0 8px 2px #fff,
+    0 0 18px 5px rgba(255,220,100,.9),
+    0 0 28px 8px rgba(255,90,160,.4);
+}
+
+/* Partículas románticas flotantes */
+.romantic-particle {
+  position: fixed;
+  z-index: 4;
+  pointer-events: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff9d0 0%, #ffd65c 45%, rgba(255,105,170,0) 72%);
+  box-shadow: 0 0 9px rgba(255,215,90,.9);
+  animation: romantic-float linear forwards;
+  opacity: 0;
+}
+
+@keyframes romantic-float {
+  0% {
+    transform: translate3d(0, 25px, 0) scale(.4);
+    opacity: 0;
+  }
+  15% { opacity: .9; }
+  70% { opacity: .8; }
+  100% {
+    transform: translate3d(var(--x), -90vh, 0) scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* Viñeta elegante */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9000;
+  box-shadow:
+    inset 0 0 13vmin rgba(0,0,0,.55),
+    inset 0 -8vmin 12vmin rgba(0,0,0,.35);
+}
+
+/* En móviles, mantener el ramo protagonista */
+@media (max-width: 600px) {
+  .flowers {
+    transform: scale(.82);
+  }
+
+  .flowers::before {
+    bottom: 15vmin;
+    width: 100vmin;
+    height: 100vmin;
+  }
+}
+
+</style>
+<style>
+/* =========================================================
+   NIVEL EXTRA — ROMÁNTICO CINEMATOGRÁFICO / SIN TEXTO NUEVO
+   ========================================================= */
+html { scroll-behavior: smooth; }
+
+body {
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* Capa de brillo ambiental */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -15%;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(circle at 50% 52%, rgba(255, 205, 90, .10), transparent 20%),
+    radial-gradient(circle at 22% 65%, rgba(255, 70, 145, .08), transparent 24%),
+    radial-gradient(circle at 78% 58%, rgba(135, 75, 255, .08), transparent 24%);
+  filter: blur(28px);
+  animation: ambient-breathe 7s ease-in-out infinite alternate;
+}
+
+@keyframes ambient-breathe {
+  from { transform: scale(.96); opacity: .65; }
+  to   { transform: scale(1.05); opacity: 1; }
+}
+
+/* Estrellitas fijas */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 8999;
+  opacity: .75;
+  background-image:
+    radial-gradient(circle at 8% 18%, rgba(255,255,255,.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 18% 72%, rgba(255,220,120,.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 31% 12%, rgba(255,255,255,.8) 0 1px, transparent 2px),
+    radial-gradient(circle at 44% 82%, rgba(255,160,205,.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 58% 20%, rgba(255,255,255,.9) 0 1px, transparent 2px),
+    radial-gradient(circle at 71% 68%, rgba(255,220,130,.8) 0 1px, transparent 2px),
+    radial-gradient(circle at 86% 27%, rgba(255,255,255,.85) 0 1px, transparent 2px),
+    radial-gradient(circle at 93% 80%, rgba(255,150,205,.7) 0 1px, transparent 2px);
+  animation: star-twinkle 3.5s ease-in-out infinite alternate;
+  box-shadow: inset 0 0 16vmin rgba(0,0,0,.42);
+}
+
+@keyframes star-twinkle {
+  from { opacity: .38; transform: scale(.995); }
+  to   { opacity: .9; transform: scale(1.005); }
+}
+
+/* Hace que el ramo se sienta más luminoso */
+body.revealed .flower {
+  filter: drop-shadow(0 0 1.1vmin rgba(255,210,70,.18));
+}
+
+body.revealed .flower__leaf {
+  animation-name: leaf-shimmer, bloom-glow;
+  animation-duration: 5s, 4s;
+  animation-iteration-count: infinite, infinite;
+  animation-direction: alternate, alternate;
+}
+
+@keyframes leaf-shimmer {
+  from { filter: brightness(1); }
+  to   { filter: brightness(1.12) saturate(1.08); }
+}
+@keyframes bloom-glow {
+  from { filter: drop-shadow(0 0 0 rgba(255,215,80,0)); }
+  to   { filter: drop-shadow(0 0 1.7vmin rgba(255,210,70,.30)); }
+}
+
+/* Brillos tipo polvo mágico */
+.magic-dust {
+  position: fixed;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(circle, #fff 0%, #ffe58a 35%, rgba(255,130,190,0) 72%);
+  box-shadow: 0 0 10px rgba(255,225,130,.9), 0 0 22px rgba(255,100,180,.35);
+  animation: dust-rise 6s ease-out forwards;
+}
+@keyframes dust-rise {
+  0% { opacity: 0; transform: translate(0, 15px) scale(.2); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), -55vh) scale(1.4); }
+}
+
+/* Corazones visuales sin texto */
+.floating-heart {
+  position: fixed;
+  bottom: -30px;
+  z-index: 5;
+  pointer-events: none;
+  width: 12px;
+  height: 12px;
+  transform: rotate(-45deg);
+  background: rgba(255, 95, 160, .55);
+  box-shadow: 0 0 14px rgba(255, 90, 165, .65);
+  animation: heart-rise linear forwards;
+}
+.floating-heart::before,
+.floating-heart::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: inherit;
+}
+.floating-heart::before { top: -6px; left: 0; }
+.floating-heart::after { left: 6px; top: 0; }
+
+@keyframes heart-rise {
+  0% { opacity: 0; transform: translateY(0) rotate(-45deg) scale(.3); }
+  12% { opacity: .65; }
+  75% { opacity: .35; }
+  100% { opacity: 0; transform: translate(var(--hx), -90vh) rotate(20deg) scale(1.2); }
+}
+
+/* Pequeño resplandor bajo el ramo */
+body.revealed .flowers {
+  filter: drop-shadow(0 2vmin 4vmin rgba(255,180,40,.12));
+}
+
+/* Transición más suave al mostrar la experiencia */
+body.revealed .night {
+  animation: night-cinematic 8s ease-in-out infinite alternate;
+}
+@keyframes night-cinematic {
+  from { transform: scale(1); }
+  to   { transform: scale(1.018); }
+}
+
+@media (max-width: 600px) {
+  .magic-dust { width: 5px; height: 5px; }
+  .floating-heart,
+  .floating-heart::before,
+  .floating-heart::after { width: 9px; height: 9px; }
+  .floating-heart::before { top: -4.5px; }
+  .floating-heart::after { left: 4.5px; }
+}
+
+
+/* Control de música después de abrir la sorpresa */
+#music-control{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:9000;
+  width:48px;height:48px;
+  border:1px solid rgba(255,220,100,.35);
+  border-radius:50%;
+  color:#ffe889;
+  background:rgba(12,8,24,.65);
+  backdrop-filter:blur(10px);
+  box-shadow:0 0 25px rgba(255,190,40,.12);
+  cursor:pointer;
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(15px) scale(.8);
+  transition:.5s ease;
+}
+body.revealed #music-control{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateY(0) scale(1);
+}
+#music-control.playing{box-shadow:0 0 28px rgba(255,205,55,.32)}
+
 </style>
 </head>
 <body class="flowers-paused">
 
+  <!-- 🎵 Coloca tu archivo de audio como: flores-amarillas.mp3 -->
+  <audio id="romantic-music" loop preload="auto">
+    <source src="flores-amarillas.mp3" type="audio/mpeg">
+  </audio>
+
   <section id="welcome-screen" aria-label="Sorpresa romántica">
     <div class="universe-stars"></div>
+    <div class="welcome-moon" aria-hidden="true"></div>
+    <span class="welcome-heart h1" aria-hidden="true"></span>
+    <span class="welcome-heart h2" aria-hidden="true"></span>
+    <span class="welcome-heart h3" aria-hidden="true"></span>
+
     <div class="welcome-content">
-      <p class="welcome-kicker">Una pequeña sorpresa</p>
-      <h1 class="welcome-title">Hay algo para ti…</h1>
-      <p class="welcome-subtitle">A veces un corazón guarda palabras que solo necesitan un pequeño toque para florecer.</p>
+      <p class="welcome-kicker">Para alguien muy especial ✦</p>
+      <h1 class="welcome-title">Tengo algo para ti…</h1>
+      <p class="welcome-subtitle">
+        Hay momentos que no necesitan muchas palabras…
+        solo un pequeño detalle para decirte
+        <strong>lo especial que eres.</strong>
+      </p>
+
       <button id="heart-button" class="heart-button" type="button" aria-label="Tocar el corazón">
+        <span class="heart-glow"></span>
         <span class="heart-shape"></span>
         <span class="heart-highlight"></span>
       </button>
-      <div class="touch-label">TOCAR</div>
+
+      <div class="touch-label">TOCA MI CORAZÓN</div>
       <div class="touch-hint">☝️</div>
+      <div class="music-hint">🎵 Al tocarlo comenzará nuestra sorpresa con <span>Flores Amarillas</span></div>
     </div>
   </section>
 
@@ -745,6 +1392,10 @@ body.revealed .flowers { opacity: 1; filter: none; }
     <h2>Que nunca te falten motivos para sonreír 🌼</h2>
     <p>Y que cada flor te recuerde lo especial que eres.</p>
   </div>
+
+  <button id="music-control" type="button" aria-label="Pausar música" title="Música">
+    🎵
+  </button>
 
   <div class="night"></div>
   
@@ -1068,7 +1719,79 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 350);
   });
 });
+
+  // Partículas luminosas flotantes: efecto visual, sin texto.
+  function createRomanticParticles() {
+    const amount = window.innerWidth < 600 ? 22 : 34;
+
+    for (let i = 0; i < amount; i++) {
+      const p = document.createElement("span");
+      p.className = "romantic-particle";
+
+      p.style.left = `${Math.random() * 100}vw`;
+      p.style.bottom = `${-10 - Math.random() * 20}vh`;
+      p.style.setProperty("--x", `${(Math.random() - 0.5) * 180}px`);
+      p.style.animationDuration = `${7 + Math.random() * 8}s`;
+      p.style.animationDelay = `${Math.random() * 7}s`;
+      p.style.transform = `scale(${0.5 + Math.random() * 1.2})`;
+
+      document.body.appendChild(p);
+
+      setTimeout(() => p.remove(), 17000);
+    }
+  }
+
+  createRomanticParticles();
+
+  // Mantener nuevas partículas entrando lentamente.
+  setInterval(createRomanticParticles, 8500);
+
 </script>
 
+<script>
+// =========================================================
+// DETALLES EXTRA — POLVO MÁGICO + CORAZONES FLOTANTES
+// =========================================================
+(function () {
+  function createMagicDust() {
+    const count = window.innerWidth < 600 ? 10 : 17;
+    for (let i = 0; i < count; i++) {
+      const d = document.createElement("span");
+      d.className = "magic-dust";
+      d.style.left = (15 + Math.random() * 70) + "vw";
+      d.style.bottom = (8 + Math.random() * 20) + "vh";
+      d.style.setProperty("--dx", ((Math.random() - .5) * 170) + "px");
+      d.style.animationDelay = (Math.random() * 3) + "s";
+      d.style.animationDuration = (5 + Math.random() * 4) + "s";
+      document.body.appendChild(d);
+      setTimeout(() => d.remove(), 10000);
+    }
+  }
+
+  function createFloatingHearts() {
+    const count = window.innerWidth < 600 ? 5 : 8;
+    for (let i = 0; i < count; i++) {
+      const h = document.createElement("span");
+      h.className = "floating-heart";
+      h.style.left = (5 + Math.random() * 90) + "vw";
+      h.style.setProperty("--hx", ((Math.random() - .5) * 140) + "px");
+      h.style.animationDuration = (7 + Math.random() * 6) + "s";
+      h.style.animationDelay = (Math.random() * 5) + "s";
+      h.style.opacity = (.25 + Math.random() * .35).toFixed(2);
+      const size = 7 + Math.random() * 7;
+      h.style.width = size + "px";
+      h.style.height = size + "px";
+      document.body.appendChild(h);
+      setTimeout(() => h.remove(), 15000);
+    }
+  }
+
+  createMagicDust();
+  createFloatingHearts();
+
+  setInterval(createMagicDust, 5500);
+  setInterval(createFloatingHearts, 9000);
+})();
+</script>
 </body>
 </html>
